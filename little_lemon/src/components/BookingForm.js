@@ -1,31 +1,50 @@
+// src/components/BookingForm.js
 import { useState } from "react";
 
-function BookingForm({ availableTimes, dispatch }) {
+// ✅ Access the API from the window object
+const submitAPI = window.submitAPI;
 
+function BookingForm({ availableTimes, dispatch }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("17:00");
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState("Birthday");
 
+  // Update available times when date changes
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
-
     setDate(selectedDate);
 
     dispatch({
       type: "UPDATE_TIMES",
-      date: selectedDate
+      date: selectedDate,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    alert(`Reservation Confirmed!
+    const formData = {
+      date,
+      time,
+      guests,
+      occasion,
+    };
+
+    // ✅ Submit the booking via API
+    const isSubmitted = submitAPI(formData);
+
+    if (isSubmitted) {
+      alert(`Reservation Confirmed!
 Date: ${date}
 Time: ${time}
 Guests: ${guests}
 Occasion: ${occasion}`);
+    } else {
+      alert(
+        "Sorry, this time slot is no longer available. Please choose another time."
+      );
+    }
   };
 
   return (
@@ -38,10 +57,9 @@ Occasion: ${occasion}`);
           display: "grid",
           maxWidth: "300px",
           gap: "20px",
-          margin: "0 auto"
+          margin: "0 auto",
         }}
       >
-
         <label htmlFor="res-date">Choose date</label>
         <input
           type="date"
@@ -58,9 +76,7 @@ Occasion: ${occasion}`);
           onChange={(e) => setTime(e.target.value)}
         >
           {availableTimes.map((timeOption) => (
-            <option key={timeOption}>
-              {timeOption}
-            </option>
+            <option key={timeOption}>{timeOption}</option>
           ))}
         </select>
 
@@ -84,11 +100,7 @@ Occasion: ${occasion}`);
           <option>Anniversary</option>
         </select>
 
-        <input
-          type="submit"
-          value="Make Your reservation"
-        />
-
+        <input type="submit" value="Make Your reservation" />
       </form>
     </>
   );
