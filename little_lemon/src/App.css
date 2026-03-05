@@ -1,38 +1,43 @@
-/* Reset */
-
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Body */
-
+/* ===== Body ===== */
 body {
   font-family: Arial, sans-serif;
   background-color: #EDEFEE;
+  color: #333;
 }
 
-/* Header */
-
-header {
-  background-color: #495E57;
-  padding: 20px;
-  text-align: center;
-}
-
-/* Navigation */
-
+/* ===== Navigation & Logo ===== */
 nav {
-  background-color: #F4CE14;
+  background-color: #4a8a62;
+  padding: 15px 0;
 }
 
+.nav-container {
+  display: flex;
+  flex-direction: column;  /* logo above links */
+  align-items: center;     /* center logo and links */
+  gap: 15px;
+}
+
+nav .logo {
+  width: 150px;      /* fixed width */
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Nav links */
 nav ul {
-  list-style: none;
   display: flex;
   justify-content: center;
   gap: 25px;
-  padding: 15px;
+  list-style: none;
+  flex-wrap: wrap;   /* wrap on small screens */
 }
 
 nav li {
@@ -43,85 +48,97 @@ nav a {
   text-decoration: none;
   color: #333;
   font-weight: bold;
+  transition: 0.3s;
 }
 
 nav a:hover {
   color: #495E57;
 }
 
-/* Main */
-
+/* ===== Main Sections ===== */
 main {
-  padding: 40px;
-  text-align: center;
+  padding: 40px 20px;
 }
 
-/* Headings */
+/* Section styling */
+section {
+  padding: 40px 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
 
+/* ===== Headings ===== */
 h1 {
   font-size: 40px;
   color: #495E57;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 h2 {
   font-size: 32px;
   color: #495E57;
+  margin-bottom: 15px;
 }
 
 h3 {
   font-size: 24px;
+  margin-bottom: 10px;
 }
 
-/* Paragraph */
-
+/* ===== Paragraphs ===== */
 p {
   font-size: 16px;
   line-height: 1.6;
   margin-bottom: 15px;
-  color: #333;
 }
 
-/* Span */
-
+/* ===== Span ===== */
 span {
-  font-weight: bold;
   color: #F4CE14;
+  font-weight: bold;
   font-size: 18px;
 }
 
-/* Images */
-
-img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-/* Footer */
-
-footer {
+/* ===== Buttons ===== */
+button {
   background-color: #495E57;
   color: white;
-  text-align: center;
-  padding: 20px;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
-/* Responsive */
+button:hover {
+  background-color: #333;
+}
 
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .nav-container {
+    gap: 10px;
+  }
 
   nav ul {
     flex-direction: column;
-    align-items: center;
+    gap: 10px;
   }
 
   h1 {
     font-size: 28px;
   }
 
+  h2 {
+    font-size: 24px;
+  }
+
   main {
     padding: 20px;
   }
 
+  .logo {
+    width: 120px;  /* smaller logo on mobile */
+  }
 }
