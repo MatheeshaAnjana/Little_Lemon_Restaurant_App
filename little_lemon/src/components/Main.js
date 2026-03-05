@@ -1,3 +1,5 @@
+// src/components/Main.js
+
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useReducer } from "react";
 
@@ -5,25 +7,19 @@ import Homepage from "../pages/Homepage";
 import BookingPage from "../pages/BookingPage";
 import ConfirmedBooking from "../pages/ConfirmedBooking";
 
-/* Initialize times */
+/* API fallback */
+const fetchAPI = window.fetchAPI || (() => ["17:00", "18:00", "19:00"]);
+const submitAPI = window.submitAPI || (() => true);
+
 export function initializeTimes() {
   const today = new Date();
-
-  if (window.fetchAPI) {
-    return window.fetchAPI(today);
-  }
-
-  return [];
+  return fetchAPI(today);
 }
 
-/* Reducer */
 export function updateTimes(state, action) {
   if (action.type === "UPDATE_TIMES") {
-    if (window.fetchAPI) {
-      return window.fetchAPI(new Date(action.date));
-    }
+    return fetchAPI(new Date(action.date));
   }
-
   return state;
 }
 
@@ -36,19 +32,14 @@ function Main() {
     initializeTimes
   );
 
-  /* Submit booking */
   const submitForm = (formData) => {
-    if (window.submitAPI) {
-      const success = window.submitAPI(formData);
-
-      if (success) {
-        navigate("/confirmed");
-      }
+    if (submitAPI(formData)) {
+      navigate("/confirmed");
     }
   };
 
   return (
-    <main>
+    <main aria-label="Main Content">
       <Routes>
         <Route path="/" element={<Homepage />} />
 

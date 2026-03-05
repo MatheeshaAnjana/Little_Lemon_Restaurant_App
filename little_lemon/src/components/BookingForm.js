@@ -1,10 +1,13 @@
 import { useState } from "react";
 
 function BookingForm({ availableTimes, dispatch, submitForm }) {
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState("Birthday");
+
+  const isFormValid = date !== "" && guests >= 1 && guests <= 10;
 
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
@@ -12,7 +15,7 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
 
     dispatch({
       type: "UPDATE_TIMES",
-      date: selectedDate,
+      date: selectedDate
     });
   };
 
@@ -23,67 +26,89 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
       date,
       time,
       guests,
-      occasion,
+      occasion
     };
 
     submitForm(formData);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "grid",
-        maxWidth: "300px",
-        gap: "20px",
-        margin: "40px auto",
-      }}
-    >
-      <label htmlFor="res-date">Choose date</label>
-      <input
-        type="date"
-        id="res-date"
-        value={date}
-        onChange={handleDateChange}
-        required
-      />
+    <section aria-labelledby="booking-heading">
 
-      <label htmlFor="res-time">Choose time</label>
-      <select
-        id="res-time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        required
+      <h2 id="booking-heading">Reserve a Table</h2>
+
+      <form
+        onSubmit={handleSubmit}
+        aria-label="Booking Form"
+        style={{
+          display: "grid",
+          maxWidth: "300px",
+          gap: "20px",
+          margin: "0 auto"
+        }}
       >
-        <option value="">Select time</option>
 
-        {availableTimes.map((t) => (
-          <option key={t}>{t}</option>
-        ))}
-      </select>
+        <label htmlFor="res-date">Choose date</label>
+        <input
+          type="date"
+          id="res-date"
+          value={date}
+          onChange={handleDateChange}
+          required
+          aria-label="Reservation Date"
+        />
 
-      <label htmlFor="guests">Number of guests</label>
-      <input
-        type="number"
-        id="guests"
-        min="1"
-        max="10"
-        value={guests}
-        onChange={(e) => setGuests(e.target.value)}
-      />
+        <label htmlFor="res-time">Choose time</label>
+        <select
+          id="res-time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          required
+          aria-label="Reservation Time"
+        >
+          <option value="">Select Time</option>
 
-      <label htmlFor="occasion">Occasion</label>
-      <select
-        id="occasion"
-        value={occasion}
-        onChange={(e) => setOccasion(e.target.value)}
-      >
-        <option>Birthday</option>
-        <option>Anniversary</option>
-      </select>
+          {availableTimes.map((timeOption) => (
+            <option key={timeOption} value={timeOption}>
+              {timeOption}
+            </option>
+          ))}
 
-      <button type="submit">Make Your Reservation</button>
-    </form>
+        </select>
+
+        <label htmlFor="guests">Number of guests</label>
+        <input
+          type="number"
+          id="guests"
+          min="1"
+          max="10"
+          value={guests}
+          onChange={(e) => setGuests(e.target.value)}
+          required
+          aria-label="Number of Guests"
+        />
+
+        <label htmlFor="occasion">Occasion</label>
+        <select
+          id="occasion"
+          value={occasion}
+          onChange={(e) => setOccasion(e.target.value)}
+          aria-label="Occasion"
+        >
+          <option>Birthday</option>
+          <option>Anniversary</option>
+        </select>
+
+        <input
+          type="submit"
+          value="Make Your Reservation"
+          disabled={!isFormValid}
+          aria-label="On Click"
+        />
+
+      </form>
+
+    </section>
   );
 }
 
