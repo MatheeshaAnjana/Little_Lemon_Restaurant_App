@@ -1,10 +1,19 @@
-function BookingPage() {
+import BookingForm from "../components/BookingForm";
+
+function BookingPage({ availableTimes, dispatch }) {
+
   return (
-    <section>
+    <main>
+
       <h1>Reserve a Table</h1>
-      <p>Book your table at Little Lemon restaurant online!</p>
-      <button>Reserve Now</button>
-    </section>
+      <p>Please fill the form to reserve your table.</p>
+
+      <BookingForm
+        availableTimes={availableTimes}
+        dispatch={dispatch}
+      />
+
+    </main>
   );
 }
 
