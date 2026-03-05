@@ -1,18 +1,16 @@
 import BookingForm from "../components/BookingForm";
 
-function BookingPage({ availableTimes, dispatch }) {
-
+function BookingPage({ availableTimes, dispatch, submitForm }) {
   return (
-    <section>
-
-      <h1>Reserve a Table</h1>
+    <main>
+      <h1 style={{ textAlign: "center" }}>Reserve a Table</h1>
 
       <BookingForm
         availableTimes={availableTimes}
         dispatch={dispatch}
+        submitForm={submitForm}
       />
-
-    </section>
+    </main>
   );
 }
 

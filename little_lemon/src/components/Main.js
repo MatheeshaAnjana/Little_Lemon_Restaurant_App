@@ -1,46 +1,69 @@
-// src/components/Main.js
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useReducer } from "react";
 
 import Homepage from "../pages/Homepage";
 import BookingPage from "../pages/BookingPage";
+import ConfirmedBooking from "../pages/ConfirmedBooking";
 
-// ✅ Access the API from the window object
-const fetchAPI = window.fetchAPI;
-
-/* Initialize times for today using fetchAPI */
+/* Initialize times */
 export function initializeTimes() {
-  const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-  return fetchAPI(today); // Returns array of available times
+  const today = new Date();
+
+  if (window.fetchAPI) {
+    return window.fetchAPI(today);
+  }
+
+  return [];
 }
 
-/* Reducer function */
+/* Reducer */
 export function updateTimes(state, action) {
-  switch (action.type) {
-    case "UPDATE_TIMES":
-      return fetchAPI(action.date); // fetch available times for selected date
-    default:
-      return state;
+  if (action.type === "UPDATE_TIMES") {
+    if (window.fetchAPI) {
+      return window.fetchAPI(new Date(action.date));
+    }
   }
+
+  return state;
 }
 
 function Main() {
+  const navigate = useNavigate();
+
   const [availableTimes, dispatch] = useReducer(
     updateTimes,
     [],
     initializeTimes
   );
 
+  /* Submit booking */
+  const submitForm = (formData) => {
+    if (window.submitAPI) {
+      const success = window.submitAPI(formData);
+
+      if (success) {
+        navigate("/confirmed");
+      }
+    }
+  };
+
   return (
     <main>
       <Routes>
         <Route path="/" element={<Homepage />} />
+
         <Route
           path="/booking"
           element={
-            <BookingPage availableTimes={availableTimes} dispatch={dispatch} />
+            <BookingPage
+              availableTimes={availableTimes}
+              dispatch={dispatch}
+              submitForm={submitForm}
+            />
           }
         />
+
+        <Route path="/confirmed" element={<ConfirmedBooking />} />
       </Routes>
     </main>
   );
